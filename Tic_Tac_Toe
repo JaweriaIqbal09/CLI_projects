@@ -1,0 +1,64 @@
+board=["1","2","3",
+"4","5","6",
+"7","8","9"]
+
+def Win(board):
+    if board[0]==board[1]==board[2] or board[3]==board[4]==board[5] or board[6]==board[7]==board[8] :
+        return 1
+            
+    elif board[0]==board[3]==board[6] or board[1]==board[4]==board[7] or board[2]==board[5]==board[8]:
+        return 1
+   
+    elif board[0]==board[4]==board[8] or board[2]==board[4]==board[6]:
+        return 1
+
+        
+def Print_board(board):
+    print(f" {board[0]}| {board[1]} | {board[2]}")
+    print("__|___|__")
+    print(f" {board[3]}| {board[4]} | {board[5]}")
+    print("__|___|__")
+    print(f" {board[6]}| {board[7]} | {board[8]}")
+
+ch = input("Enter Player 1 choice (X or O): ")
+
+if ch in ["X", "O"]:
+    player1 = ch
+    player2 = "O" if player1 == "X" else "X"
+    turn = player1
+    move_count = 0
+
+    while True:
+        Print_board(board)
+        print(f"Player {turn}'s turn")
+
+        try:
+            mark = int(input("Enter the number where you want to mark: "))
+            if mark < 1 or mark > 9:
+                print("Invalid position ! Choose between 1 and 9")
+                continue
+        except ValueError:
+            print("Invalid input ! Please enter a number")
+            continue
+
+        if board[mark - 1] in ["X", "O"]:
+            print("That spot is already taken , Try again")
+            continue
+
+        board[mark - 1] = turn
+        move_count += 1
+
+        if Win(board) == 1:
+            print(f"Congratulations {turn} wins !")
+            Print_board(board)
+            break
+
+        if move_count == 9:
+            Print_board(board)
+            print("It's a tie!")
+            break
+
+        turn = player2 if turn == player1 else player1
+
+else:
+    print("Invalid choice. Restart The Game and choose X or O.")
