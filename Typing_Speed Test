@@ -1,0 +1,50 @@
+from random import choice
+import time
+wpm=0
+corrected_letter=0
+given_prompts = 0
+duration=60
+total_letters = 0
+
+print("Welcome to the Typing Test!")
+print(f"You have {duration} seconds to complete as many prompts as possible.")
+input("Press Enter to start...")
+filename="Prompts.txt"
+start_time = time.time()
+end_time=start_time + duration
+while True:
+    with open (filename, 'r') as file:
+        prompts = file.readlines()
+    prompt = choice(prompts).strip()
+    machine=prompt.split()
+
+    if (end_time - time.time()) >= 0:
+        print("Time remaining: ", end_time - time.time(), "seconds")
+        print(f"Prompt: {prompt}")
+        given_prompts += 1
+        total_letters += sum([len(words) for words in machine])
+
+        user_input = input("Press Enter to continue : ").strip().lower()
+        user = user_input.split()
+        wpm += len(user) 
+
+
+        if user!=machine:
+
+            for i in range(min(len(user), len(machine))):
+                for j in range(min(len(user[i]), len(machine[i]))):
+                    if user[i][j] == machine[i][j]:
+                        corrected_letter += 1
+  
+    elif (end_time - time.time())<=0:
+        print("Time is up!")
+        break 
+
+print(corrected_letter, "letters are correct")
+print(f"Total letters in the prompt: {total_letters}")
+
+print(f"Your WPM is {wpm / (duration / 60):.2f}")
+print(f"You have completed {given_prompts} prompts in {duration} seconds.")
+accuracy  = ((corrected_letter * 100) / total_letters) if total_letters > 0 else 0
+print(f"Accuracy: {accuracy:.2f}%")
+
